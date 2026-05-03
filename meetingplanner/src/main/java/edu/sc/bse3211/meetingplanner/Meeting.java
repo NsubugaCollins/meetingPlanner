@@ -15,6 +15,7 @@ public class Meeting {
 	 * Default constructor
 	 */
 	public Meeting(){
+		attendees = new ArrayList<>();
 	}
 	
 	/**
@@ -28,6 +29,7 @@ public class Meeting {
 		this.day=day;
 		this.start=0;
 		this.end=23;
+		attendees = new ArrayList<>();
 	}
 	
 	/**
@@ -43,6 +45,7 @@ public class Meeting {
 		this.start=0;
 		this.end=23;
 		this.description= description;
+		attendees = new ArrayList<>();
 	}
 	
 	/**
@@ -57,6 +60,7 @@ public class Meeting {
 		this.day=day;
 		this.start=start;
 		this.end=end;
+		attendees = new ArrayList<>();
 	}
 	
 	/**
@@ -100,7 +104,8 @@ public class Meeting {
 	 * @return String - Information about the meeting.
 	 */
 	public String toString(){
-		String info=month+"/"+day+", "+start+" - "+end+","+room.getID()+": "+description+"\nAttending: ";
+		String roomInfo = (room != null) ? room.getID() : "No Room";
+		String info=month+"/"+day+", "+start+" - "+end+","+roomInfo+": "+description+"\nAttending: ";
 		
 		for(Person attendee : attendees){
 			info=info+attendee.getName()+",";
