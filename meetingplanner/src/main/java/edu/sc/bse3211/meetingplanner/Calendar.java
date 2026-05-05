@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Calendar {
 	// Indexed by Month, Day
 	private ArrayList<ArrayList<ArrayList<Meeting>>> occupied;
+	private static final int[] DAYS_IN_MONTH = {0,31,28,31,30,31,30,31,31,30,31,30,31};
 	
 	/**
 	 * Default constructor, builds a calendar and initializes each day
@@ -20,7 +21,7 @@ public class Calendar {
 		 */
 		occupied = new ArrayList<ArrayList<ArrayList<Meeting>>>();
 		
-		for(int i=0;i<=13;i++){
+		for(int i=0;i<=12;i++){
 			// Initialize month
 			occupied.add(new ArrayList<ArrayList<Meeting>>());
 			for(int j=0;j<32;j++){
@@ -28,19 +29,6 @@ public class Calendar {
 				occupied.get(i).add(new ArrayList<Meeting>());
 			}
 		}
-		
-		/** Not every month should have 31 days. 
-		 * We can deal with this in a hack-ish manner by 
-		 * putting in all-day meetings for those dates.
-		 */
-		occupied.get(2).get(29).add(new Meeting(2,29,"Day does not exist"));
-		occupied.get(2).get(30).add(new Meeting(2,30,"Day does not exist"));
-		occupied.get(2).get(31).add(new Meeting(2,31,"Day does not exist"));
-		occupied.get(4).get(31).add(new Meeting(4,31,"Day does not exist"));
-		occupied.get(6).get(31).add(new Meeting(6,31,"Day does not exist"));
-		occupied.get(9).get(31).add(new Meeting(9,31,"Day does not exist"));
-		occupied.get(11).get(30).add(new Meeting(11,31,"Day does not exist"));
-		occupied.get(11).get(31).add(new Meeting(11,31,"Day does not exist"));
 	}
 	
 	/**
@@ -77,13 +65,14 @@ public class Calendar {
 	 * @throws TimeConflictException - If an invalid date or time is entered.
 	 */
 	public static void checkTimes(int mMonth,int mDay,int mStart, int mEnd) throws TimeConflictException{
-		// Check for illegal dates
-		if(mDay< 1 || mDay > 31){
-			throw new TimeConflictException("Day does not exist.");
+		// Check for illegal months
+		if(mMonth < 1 || mMonth > 12){
+			throw new TimeConflictException("Month does not exist.");
 		}
 
-		if(mMonth < 1 || mMonth >= 12){
-			throw new TimeConflictException("Month does not exist.");
+		// Check for illegal dates for the given month
+		if(mDay< 1 || mDay > DAYS_IN_MONTH[mMonth]){
+			throw new TimeConflictException("Day does not exist.");
 		}
 
 		// Check for illegal times
